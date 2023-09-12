@@ -1,0 +1,11 @@
+/* CSS code for Imporvement 1 
+This changes the background of the table to white*/
+table {background-color: white; width: 1000px;}
+
+/* CSS code for Imporvement 2 
+This changes the height of the inputs to be more visible and inline with the arrow*/
+input {height: 35px; margin-top: 15px;}
+
+/* CSS code for Imporvement 3 
+This changes the font size of the texts and adjust the line spacing*/
+div {font-size: 18px; line-height: 30px;}
