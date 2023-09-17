@@ -2,85 +2,49 @@
 Collaborators:
 Date: Sept.22.23
  -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Expenses</title>
-	<link rel="stylesheet" href="style.css">
-</head>
-<body style="background-color:powderblue;">
-
-<div id="app">
-	<!-- Replace cmps3141-as3-css_app-23s1 below with your repo name (cmps3141-as3-css_app-23s1-yourusername) so you can save!  
-	https://github.com/UB-CMPS3141/cmps3141-as3-css-app-23s1-CoderRyan13/blob/main/expenses/data.json 
-	<ma-data v-model="expenses" src="https://github.com/UB-CMPS3141/cmps3141-as3-css_app-23s1-CoderRyan13/expenses/data.json"></ma-data> -->
-
-	<!-- App YOUR UI here -->
-	<v-app data='{"name": "Neo"}'>
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Expenses</title>
+   <link rel="stylesheet" href="style.css">
+   <link rel="stylesheet" href="https://get.mavo.io/mavo.css">
+   <script src="https://get.mavo.io/mavo.js"></script>
+ </head>
+ <body style="background-color:powderblue;">
+ 
+ <div id="app">
+   <!-- Replace cmps3141-as3-css_app-23s1 below with your repo name (cmps3141-as3-css_app-23s1-yourusername) so you can save!  
+   https://github.com/UB-CMPS3141/cmps3141-as3-css-app-23s1-CoderRyan13/blob/main/expenses/data.json 
+   <ma-data v-model="expenses" src="https://github.com/UB-CMPS3141/cmps3141-as3-css_app-23s1-CoderRyan13/expenses/data.json"></ma-data> -->
+ 
+   <!-- App YOUR UI here -->
 		<h1 style="text-align: center; color: blue;">Couple Joint Expenses Calculator</h1>
 		<div>
 			Person's A name:
-			<label>Name: <input v-model="name" /></label>
+			<input type="text" v-model="personA">
 		</div>
 		<div>
 			Person's B name:
-			<input type="text" placeholder="Peter">
-			<button class="js-personBButton">Add</button>
+			<input type="text" v-model="personB">
 		</div>
-
+	
 		<table style="width: 50%;">
 			<tr>
 				<td>
-					<h2>Ashley</h2>
 					<table>
-						<tr>
-							<td><b><i>Total Owed to Peter</i></b></td>
-							<td>$-185</td>
-						</tr>
-						<tr>
-							<td>Total Payments to Peter</td>
-							<td>$165</td>
-						</tr>
-						<tr>
-							<td>Total Joint Payments to Peter</td>
-							<td>$0</td>
-						</tr>
-						<tr>
-							<td>Total Personal Payments</td>
-							<td>$0</td>
-						</tr>
-						<tr>
-							<td>Total Payments to Joint</td>
-							<td>$300</td>
-						</tr>
+						<td><h2>{{personA}} Owes:</h2></td>
+						<td></td>			
+						<td><h2>${{totalPersonAOwes-totalPersonBOwes}}</h2></td>
 					</table>
 				</td>
-				
+
 				<td>
-					<h2>Peter</h2>
 					<table>
-						<tr>
-							<td><b><i>Total Owed to Ashley</i></b></td>
-							<td>$185</td>
-						</tr>
-						<tr>
-							<td>Total Payments to Ashley</td>
-							<td>$130</td>
-						</tr>
-						<tr>
-							<td>Total Joint Payments to Ashley</td>
-							<td>$0</td>
-						</tr>
-						<tr>
-							<td>Total Personal Payments</td>
-							<td>$0</td>
-						</tr>
-						<tr>
-							<td>Total Payments to Joint</td>
-							<td>$0</td>
-						</tr>
+						<td><h2>{{personB}} Owes:</h2></td>		
+						<td></td>		
+						<td><h2>${{totalPersonBOwes-totalPersonAOwes}}</h2></td>
 					</table>
 				</td>
 			</tr>
@@ -88,16 +52,16 @@ Date: Sept.22.23
 
 		<h3>Add Payment</h3>
 		<form>
-			<table>
+			<table class="formTable">
 				<tr>
 					<td>
 						<label for="payer">Select Payer:</label>
 					</td>
 					<td>
-						<select name="payer" required>
-							<option value="Ashley">Ashley</option>
-							<option value="Peter">Peter</option>
-							<option value="Joint">Joint</option> 
+						<select v-model="form.payer" required>
+							<option value=Neo>{{personA}}</option>
+							<option value=Trinity>{{personB}}</option>
+							<option value=Joint>{{joint}}</option> 
 						</select>
 					</td>
 				</tr>
@@ -106,10 +70,10 @@ Date: Sept.22.23
 						<label for="payingTo">Who is the Payment to:</label>
 					</td>
 					<td>
-						<select name="payingTo" required>
-							<option value="Peter">Peter</option>
-							<option value="Joint">Joint</option> 
-							<option value="Ashley">Ashley</option>
+						<select v-model="form.payingTo" required>
+							<option value=Trinity>{{personB}}</option>
+							<option value=Joint>{{joint}}</option> 
+							<option value=Neo>{{personA}}</option>
 						</select>
 					</td>
 				</tr>
@@ -118,7 +82,7 @@ Date: Sept.22.23
 						<label for="amount">Amount:</label>
 					</td>
 					<td>
-						$<input type="number" value="0.00" min="0.00" required>
+						$<input type="number" min="0.00" v-model="form.amount" style="width: 80px;" required>
 					</td>
 				</tr>
 				<tr>
@@ -126,7 +90,7 @@ Date: Sept.22.23
 						<label for="description">Add Description:</label>
 					</td>
 					<td>
-						<input type="text" placeholder="description" name="description" required>
+						<input type="text" v-model="form.description" placeholder="description" required>
 					</td>
 				</tr>
 				<tr>
@@ -134,19 +98,19 @@ Date: Sept.22.23
 						<label for="pDate">Date of Payment:</label>
 					</td>
 					<td>
-						<input type="date" max="" name="pDate" required>
+						<input type="date" max="[$today]" v-model="form.pDate" required>
 					</td>
 				</tr>
 				<tr>
 					<td>
-						<input type="submit" value="Add Payment"> 
+						<button v-on:click.prevent="addPayment">Add Payment</button>
 					</td>
 				</tr>
 			</table>
 		</form>
-
+	
 		<h3>Payments Made</h3>
-		<table style="width: 60%;">
+		<table class="paymentTable">
 			<tr>
 				<th>ID</th>
 				<th>Date</th>
@@ -154,47 +118,28 @@ Date: Sept.22.23
 				<th>Paid To</th>
 				<th>Amount</th>
 				<th>Description</th>
-				<th>Ashley Owes</th>
-				<th>Peter Owes</th>
+				<th>{{personA}} Owes</th>
+				<th>{{personB}} Owes</th>
 			</tr>
-			<tr>
-				<td>1</td>
-				<td>7 Aug 2023</td>
-				<td>Ashley</td>
-				<td>Peter</td>
-				<td>$165</td>
-				<td>Bike</td>
-				<td>$0</td>
-				<td>$165</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>11 Aug 2023</td>
-				<td>Ashley</td>
-				<td>Joint</td>
-				<td>$300</td>
-				<td>Rent</td>
-				<td>$0</td>
-				<td>$150</td>
-			</tr>
-			<tr>
-				<td>3</td>
-				<td>12 Aug 2023</td>
-				<td>Peter</td>
-				<td>Ashley</td>
-				<td>$130</td>
-				<td>Nails</td>
-				<td>$130</td>
-				<td>$0</td>
+
+			<tr v-for="(expense, index) in expenses":key="expense.id">
+				<td>{{index+1}}</td>
+				<td>{{expense.pDate}}</td>
+				<td>{{expense.payer}}</td>
+				<td>{{expense.payingTo}}</td>
+				<td>${{expense.amount}}</td>
+				<td>{{expense.description}}</td>
+				<td>${{expense.personAOwes}}</td>
+				<td>${{expense.personBOwes}}</td>
 			</tr>
 		</table>
-	</v-app>
-	<!-- Delete this line when you write your actual UI -->
-	{{ expenses.length }} expenses loaded.
-</div>
 
-<script src="index.js" type="module"></script>
-<script src="https://mavue.mavo.io/set-data/set-data.js" type="module"></script>
-
-</body>
-</html>
+   <!-- Delete this line when you write your actual UI -->
+   {{ expenses.length }} expenses loaded.
+ </div>
+ 
+ <script src="index.js" type="module"></script>
+ 
+ </body>
+ </html>
+ 
