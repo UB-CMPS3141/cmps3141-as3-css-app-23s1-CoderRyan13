@@ -18,3 +18,14 @@ Date: Sept.22.23
   width: 850px;
   padding: 5px;
 }
+
+.paymentButton {
+  background-color: rgb(65, 212, 65);
+  border: none;
+  color: white;
+  width: 150px;
+  height: 30px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+}
