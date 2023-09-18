@@ -14,6 +14,8 @@ globalThis.app = createApp({
 		joint: "Joint",
 		totalPersonAOwes: 0,
 		totalPersonBOwes: 0,
+		maxDate: new Date().toUTCString().slice(5, 16),
+		errors: "",
 		
 		form: {
 			payer: "",
@@ -52,40 +54,60 @@ globalThis.app = createApp({
 			const description = this.form.description;
 			const pDate = this.form.pDate;
 
-			let personAOwes = 0;
-			if(payer===this.personB && payingTo===this.personA) {
-				personAOwes = this.form.amount;
-			} else if(payer===this.personB && payingTo===this.joint || payer===this.joint && payingTo===this.personA) {
-				personAOwes = this.form.amount/2;
+			if(payer==="" || payingTo==="" || amount==="" || description==="" || pDate==="") {
+				this.errors = "* Please fill out all the fields!"
+				return false;
+			} 
+
+			if (confirm("Are you sure you want to add this payment? If so click 'OK'")) {
+				let personAOwes = 0;
+				if(payer===this.personB && payingTo===this.personA) {
+					personAOwes = this.form.amount.toFixed(2);
+				} else if(payer===this.personB && payingTo===this.joint || payer===this.joint && payingTo===this.personA) {
+					personAOwes = (this.form.amount/2).toFixed(2);
+				} else {
+					personAOwes = 0;
+				}
+
+				let personBOwes = 0;
+				if(payer===this.personA && payingTo===this.personB) {
+					personBOwes = this.form.amount.toFixed(2);
+				} else if(payer===this.personA && payingTo===this.joint || payer===this.joint && payingTo===this.personB) {
+					personBOwes = (this.form.amount/2).toFixed(2);
+				} else {
+					personBOwes = 0;
+				}
+
+				this.totalPersonAOwes += Number(personAOwes);
+
+				this.totalPersonBOwes += Number(personBOwes);
+
+				this.expenses.push({
+					payer,
+					payingTo,
+					amount,
+					description,
+					pDate,
+					personAOwes,
+					personBOwes
+				});
+				this.form={
+					payer: "",
+					payingTo: "",
+					amount: 0.00.toFixed(2),
+					description: "",
+					pDate: ""
+				};
+				this.errors = "";
+				console.log(this.totalPersonAOwes);
 			} else {
-				personAOwes = 0;
+				return false;
 			}
+		},
 
-			let personBOwes = 0;
-			if(payer===this.personA && payingTo===this.personB) {
-				personBOwes = this.form.amount;
-			} else if(payer===this.personA && payingTo===this.joint || payer===this.joint && payingTo===this.personB) {
-				personBOwes = this.form.amount/2;
-			} else {
-				personBOwes = 0;
-			}
-
-			this.totalPersonAOwes += personAOwes;
-
-			this.totalPersonBOwes += personBOwes;
-
-			this.expenses.push({
-				payer,
-				payingTo,
-				amount,
-				description,
-				pDate,
-				personAOwes,
-				personBOwes
-			});
-			this.form={};
-			//console.log(this.expenses);
-		}
+		/*deleteRow(index) {
+			this.expenses.splice(index, 1);
+		},*/
 	},
 
 	computed: {

@@ -36,7 +36,7 @@ Date: Sept.22.23
 					<table>
 						<td><h2>{{personA}} Owes:</h2></td>
 						<td></td>			
-						<td><h2>${{totalPersonAOwes-totalPersonBOwes}}</h2></td>
+						<td><h2>${{(totalPersonAOwes-totalPersonBOwes).toFixed(2)}}</h2></td>
 					</table>
 				</td>
 
@@ -44,13 +44,14 @@ Date: Sept.22.23
 					<table>
 						<td><h2>{{personB}} Owes:</h2></td>		
 						<td></td>		
-						<td><h2>${{totalPersonBOwes-totalPersonAOwes}}</h2></td>
+						<td><h2>${{(totalPersonBOwes-totalPersonAOwes).toFixed(2)}}</h2></td>
 					</table>
 				</td>
 			</tr>
 		</table>
 
 		<h3>Add Payment</h3>
+		<p style="color: red;">{{errors}}</p>
 		<form>
 			<table class="formTable">
 				<tr>
@@ -58,9 +59,9 @@ Date: Sept.22.23
 						<label for="payer">Select Payer:</label>
 					</td>
 					<td>
-						<select v-model="form.payer" required>
-							<option value=Neo>{{personA}}</option>
-							<option value=Trinity>{{personB}}</option>
+						<select v-model="form.payer">
+							<option :value=personA>{{personA}}</option>
+							<option :value=personB>{{personB}}</option>
 							<option value=Joint>{{joint}}</option> 
 						</select>
 					</td>
@@ -70,10 +71,10 @@ Date: Sept.22.23
 						<label for="payingTo">Who is the Payment to:</label>
 					</td>
 					<td>
-						<select v-model="form.payingTo" required>
-							<option value=Trinity>{{personB}}</option>
+						<select v-model="form.payingTo">
+							<option :value=personB>{{personB}}</option>
 							<option value=Joint>{{joint}}</option> 
-							<option value=Neo>{{personA}}</option>
+							<option :value=personA>{{personA}}</option>
 						</select>
 					</td>
 				</tr>
@@ -82,7 +83,7 @@ Date: Sept.22.23
 						<label for="amount">Amount:</label>
 					</td>
 					<td>
-						$<input type="number" min="0.00" v-model="form.amount" style="width: 80px;" required>
+						$<input type="number" min="0.00" v-model="form.amount" style="width: 80px;">
 					</td>
 				</tr>
 				<tr>
@@ -90,7 +91,7 @@ Date: Sept.22.23
 						<label for="description">Add Description:</label>
 					</td>
 					<td>
-						<input type="text" v-model="form.description" placeholder="description" required>
+						<input type="text" v-model="form.description" placeholder="description">
 					</td>
 				</tr>
 				<tr>
@@ -98,7 +99,7 @@ Date: Sept.22.23
 						<label for="pDate">Date of Payment:</label>
 					</td>
 					<td>
-						<input type="date" max="[$today]" v-model="form.pDate" required>
+						<input type="date" :max="new Date()" v-model="form.pDate">
 					</td>
 				</tr>
 				<tr>
@@ -131,6 +132,7 @@ Date: Sept.22.23
 				<td>{{expense.description}}</td>
 				<td>${{expense.personAOwes}}</td>
 				<td>${{expense.personBOwes}}</td>
+				<!-- <td><button v-on:click.prevent="deleteRow(index)">Delete</button></td> -->
 			</tr>
 		</table>
 
