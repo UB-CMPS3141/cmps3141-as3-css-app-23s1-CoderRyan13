@@ -15,36 +15,38 @@ Date: Sept.22.23
  <body style="background-color:powderblue;">
  
  <div id="app">
-   <!-- Replace cmps3141-as3-css_app-23s1 below with your repo name (cmps3141-as3-css_app-23s1-yourusername) so you can save!  
-   https://github.com/UB-CMPS3141/cmps3141-as3-css-app-23s1-CoderRyan13/blob/main/expenses/data.json 
-   <ma-data v-model="expenses" src="https://github.com/UB-CMPS3141/cmps3141-as3-css_app-23s1-CoderRyan13/expenses/data.json"></ma-data> -->
+		<!-- Replace cmps3141-as3-css_app-23s1 below with your repo name (cmps3141-as3-css_app-23s1-yourusername) so you can save!  -->
+		<ma-data v-model="expenses" src="https://github.com/UB-CMPS3141/cmps3141-as3-css-app-23s1-CoderRyan13/expenses/data.json"></ma-data>
  
    <!-- App YOUR UI here -->
-		<h1 style="text-align: center; color: blue;">Couple Joint Expenses Calculator</h1>
-		<div>
+	 	<div style="width:100%; background-color: black; color: white; height: 50px; font-size: 30px; display: flex; align-items: center; justify-content: center;">Couple Joint Expenses Calculator</div>
+		<br>
+		<p style="color: rgb(0, 75, 0);">*Instructions: Be sure to input Person's A name and Person's B name then click save before proceeding!*</p>
+		<p style="color: rgb(0, 75, 0);">*Notice: Persons' owe amount are in BZD($)*</p>
+		<div style="margin-bottom: 5px;">
 			Person's A name:
-			<input type="text" v-model="personA">
+			<input type="text" v-model="personA" class="personinput">
+			<button class="js-inputButton" v-on:click.prevent="saveButton">Save</button> 
 		</div>
 		<div>
 			Person's B name:
-			<input type="text" v-model="personB">
+			<input type="text" v-model="personB" class="person2input">
+			<button class="js-inputButton2" v-on:click.prevent="saveButton2">Save</button> 
 		</div>
-	
-		<table style="width: 50%;">
+		<br>
+		<table>
 			<tr>
 				<td>
-					<table>
-						<td><h2>{{personA}} Owes:</h2></td>
-						<td></td>			
-						<td><h2>${{(totalPersonAOwes-totalPersonBOwes).toFixed(2)}}</h2></td>
+					<table class="visual">
+						<td>{{personA}} Owes:</td>
+						<td>$ {{(totalPersonAOwes-totalPersonBOwes).toFixed(2)}}</td>
 					</table>
 				</td>
 
 				<td>
-					<table>
-						<td><h2>{{personB}} Owes:</h2></td>		
-						<td></td>		
-						<td><h2>${{(totalPersonBOwes-totalPersonAOwes).toFixed(2)}}</h2></td>
+					<table class="visual">
+						<td>{{personB}} Owes:</td>	
+						<td>$ {{(totalPersonBOwes-totalPersonAOwes).toFixed(2)}}</td>
 					</table>
 				</td>
 			</tr>
@@ -83,7 +85,12 @@ Date: Sept.22.23
 						<label for="amount">Amount:</label>
 					</td>
 					<td>
-						$<input type="number" min="0.00" v-model="form.amount" style="width: 80px;">
+						<select v-model="form.currency">
+							<option value="$">$</option>
+							<option value="MXN">MXN</option> 
+							<option value="GTQ">GTQ</option>
+						</select>
+						<input type="number" min="0.00" v-model="form.amount" style="width: 80px;">
 					</td>
 				</tr>
 				<tr>
@@ -99,7 +106,7 @@ Date: Sept.22.23
 						<label for="pDate">Date of Payment:</label>
 					</td>
 					<td>
-						<input type="date" :max="new Date()" v-model="form.pDate">
+						<input type="date" :max="nowDate" v-model="form.pDate">
 					</td>
 				</tr>
 				<tr>
@@ -128,10 +135,10 @@ Date: Sept.22.23
 				<td>{{expense.pDate}}</td>
 				<td>{{expense.payer}}</td>
 				<td>{{expense.payingTo}}</td>
-				<td>${{expense.amount}}</td>
+				<td>{{expense.currency}} {{expense.formAmount}}</td>
 				<td>{{expense.description}}</td>
-				<td>${{expense.personAOwes}}</td>
-				<td>${{expense.personBOwes}}</td>
+				<td>$ {{expense.personAOwes}}</td>
+				<td>$ {{expense.personBOwes}}</td>
 				<!-- <td><button v-on:click.prevent="deleteRow(index)">Delete</button></td> -->
 			</tr>
 		</table>

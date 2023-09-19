@@ -14,15 +14,16 @@ globalThis.app = createApp({
 		joint: "Joint",
 		totalPersonAOwes: 0,
 		totalPersonBOwes: 0,
-		maxDate: new Date().toUTCString().slice(5, 16),
+		nowDate: new Date().toISOString().slice(0,10),
 		errors: "",
 		
 		form: {
 			payer: "",
 			payingTo: "",
-			amount: 0.00.toFixed(2),
+			amount: 0,
 			description: "",
-			pDate: ""
+			pDate: "",
+			currency: "$"
 		}
 	},
 
@@ -50,30 +51,38 @@ globalThis.app = createApp({
 		addPayment() {
 			const payer = this.form.payer;
 			const payingTo = this.form.payingTo;
-			const amount = this.form.amount;
 			const description = this.form.description;
 			const pDate = this.form.pDate;
+			const currency = this.form.currency;
+			const formAmount = this.form.amount.toFixed(2);
+			let amount = this.form.amount.toFixed(2);
 
-			if(payer==="" || payingTo==="" || amount==="" || description==="" || pDate==="") {
-				this.errors = "* Please fill out all the fields!"
+			if(payer==="" || payingTo==="" || formAmount===0 || description==="" || pDate==="") {
+				this.errors = "* Please fill out all the fields!";
 				return false;
 			} 
+			
+			if(currency === "MXN") {
+				amount = (this.currencyConvert("MXN", "BZD", amount)).toFixed(2)
+			} else if(currency === "GTQ") {
+				amount = (this.currencyConvert("GTQ", "BZD", amount)).toFixed(2)
+			}
 
 			if (confirm("Are you sure you want to add this payment? If so click 'OK'")) {
 				let personAOwes = 0;
 				if(payer===this.personB && payingTo===this.personA) {
-					personAOwes = this.form.amount.toFixed(2);
+					personAOwes = amount;
 				} else if(payer===this.personB && payingTo===this.joint || payer===this.joint && payingTo===this.personA) {
-					personAOwes = (this.form.amount/2).toFixed(2);
+					personAOwes = (amount/2).toFixed(2);
 				} else {
 					personAOwes = 0;
 				}
 
 				let personBOwes = 0;
 				if(payer===this.personA && payingTo===this.personB) {
-					personBOwes = this.form.amount.toFixed(2);
+					personBOwes = amount;
 				} else if(payer===this.personA && payingTo===this.joint || payer===this.joint && payingTo===this.personB) {
-					personBOwes = (this.form.amount/2).toFixed(2);
+					personBOwes = (amount/2).toFixed(2);
 				} else {
 					personBOwes = 0;
 				}
@@ -89,21 +98,51 @@ globalThis.app = createApp({
 					description,
 					pDate,
 					personAOwes,
-					personBOwes
+					personBOwes, 
+					currency,
+					formAmount
 				});
 				this.form={
 					payer: "",
 					payingTo: "",
-					amount: 0.00.toFixed(2),
+					amount: 0,
 					description: "",
-					pDate: ""
+					pDate: "",
+					currency: "$"
 				};
 				this.errors = "";
-				console.log(this.totalPersonAOwes);
 			} else {
 				return false;
 			}
 		},
+
+		saveButton() {
+			const buttonElement = document.querySelector('.js-inputButton');
+
+			let inputElement = document.querySelector('.personinput');
+
+			if(buttonElement.innerText === "Save") {
+				inputElement.disabled = true;
+				buttonElement.innerHTML = "Edit";
+			} else {
+				inputElement.disabled = false;
+				buttonElement.innerHTML = "Save";
+			}
+		},
+
+		saveButton2() {
+			const buttonElement = document.querySelector('.js-inputButton2');
+
+			let inputElement = document.querySelector('.person2input');
+
+			if(buttonElement.innerText === "Save") {
+				inputElement.disabled = true;
+				buttonElement.innerHTML = "Edit";
+			} else {
+				inputElement.disabled = false;
+				buttonElement.innerHTML = "Save";
+			}
+		}
 
 		/*deleteRow(index) {
 			this.expenses.splice(index, 1);

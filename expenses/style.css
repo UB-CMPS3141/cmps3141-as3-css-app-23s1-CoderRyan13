@@ -7,6 +7,7 @@ Date: Sept.22.23
   padding: 5px;
   border-spacing: 5px 5px;
   width: 370px;
+  border: 10px black ridge;
 }
 
 .paymentTable th, 
@@ -28,4 +29,11 @@ Date: Sept.22.23
   cursor: pointer;
   font-size: 14px;
   font-weight: bold;
+}
+
+.visual {
+  font-size: 22px;
+  font-family: serif;
+  border: 7px white outset;
+  margin-right: 10px;
 }
