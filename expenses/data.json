@@ -26,13 +26,13 @@
 	{
 		"payer": "Trinity",
 		"payingTo": "Joint",
-		"amount": 150,
+		"amount": 200,
 		"description": "Card",
 		"pDate": "9/15/2023",
-		"personAOwes": 75,
+		"personAOwes": 100,
 		"personBOwes": 0, 
 		"currency": "$",
-		"formAmount": 150
+		"formAmount": 200
 	},
 
 	{
@@ -50,12 +50,12 @@
 	{
 		"payer": "Joint",
 		"payingTo": "Trinity",
-		"amount": 400,
+		"amount": 300,
 		"description": "Grocery",
 		"pDate": "9/16/2023",
 		"personAOwes": 0,
-		"personBOwes": 200, 
+		"personBOwes": 150, 
 		"currency": "$",
-		"formAmount": 400
+		"formAmount": 300
 	}
 ]
